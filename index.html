@@ -157,6 +157,19 @@ canvas{display:block;width:100%;height:auto;border-radius:11px;box-shadow:0 8px 
 <script src="data/photos-02.js"></script>
 <script src="data/photos-03.js"></script>
 <script src="data/photos-04.js"></script>
+<script src="data/photos-05.js"></script>
+<script src="data/photos-06.js"></script>
+<script src="data/photos-07.js"></script>
+<script src="data/photos-08.js"></script>
+<script src="data/photos-09.js"></script>
+<script src="data/photos-10.js"></script>
+<script src="data/photos-11.js"></script>
+<script src="data/photos-12.js"></script>
+<script src="data/photos-13.js"></script>
+<script src="data/photos-14.js"></script>
+<script src="data/photos-15.js"></script>
+<script src="data/photos-16.js"></script>
+<script src="data/photos-17.js"></script>
 <script src="data/cadastro.js"></script>
 <script>
 const BASE="data:image/jpeg;base64,"+(window.BASE_PARTS||[]).join("");
@@ -201,7 +214,7 @@ function preloadPhoto(path){
   if(!path)return null;
   if(photoCache.has(path))return photoCache.get(path);
   const im=new Image();
-  im.src=path;
+  im.src=(window.CANDIDATE_PHOTOS||{})[path]||path;
   im.onload=draw;
   photoCache.set(path,im);
   return im
@@ -273,7 +286,8 @@ function updateMatch(id){
   const box=document.getElementById("match-"+id),c=findCandidate(id,getValue(id));
   if(!c){box.classList.remove("show");box.innerHTML="";return}
   const meta=[LABELS[id],c.partido].filter(Boolean).join(" • ");
-  box.innerHTML=`<img src="${c.foto}" alt=""><div><div class="m1">${c.nome}</div><div class="m2">${meta} • nº ${c.numero}</div></div>`;
+  const photo=((window.CANDIDATE_PHOTOS||{})[c.foto])||c.foto;
+  box.innerHTML=`<img src="${photo}" alt=""><div><div class="m1">${c.nome}</div><div class="m2">${meta} • nº ${c.numero}</div></div>`;
   box.classList.add("show")
 }
 function updateProgress(){
@@ -388,7 +402,6 @@ loadLocal();
 bg.onload=updateAll;
 bg.src=BASE;
 electionLock();
-
 </script>
 </body>
 </html>
