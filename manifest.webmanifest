@@ -1,0 +1,9 @@
+{
+  "name": "Santinho Virtual — Wilson Martins 5500",
+  "short_name": "Santinho 5500",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fa",
+  "theme_color": "#ff7437",
+  "description": "Colinha de votação personalizada — Wilson Martins 5500."
+}
