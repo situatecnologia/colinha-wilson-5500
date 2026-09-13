@@ -1,4 +1,4 @@
-name: Coleta fotos TSE 2026 PI
+name: Coleta fotos Deputado Estadual PI 2026
 
 on:
   push:
@@ -17,36 +17,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Baixar fotos pela API oficial DivulgaCandContas
+      - name: Coletar fotos oficiais do TSE via espelho eleitoral
         shell: bash
         run: |
           python - <<'PY'
           import csv
-          import json
-          import mimetypes
-          import os
+          import html as htmllib
+          import re
           import time
           import urllib.parse
           import urllib.request
           from pathlib import Path
 
-          BASE = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1'
-          LIST_URL = BASE + '/candidatura/listar/2026/PI/20322002026/7/candidatos'
+          SITE = 'https://resultadoseleicoes.com'
+          LIST_BASE = SITE + '/eleicoes/2026/pi/deputado-estadual'
           OUT = Path('Fotos_Deputado_Estadual_PI_2026')
           OUT.mkdir(exist_ok=True)
 
           HEADERS = {
               'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/152 Safari/537.36',
-              'Accept': 'application/json,text/plain,*/*',
-              'Referer': 'https://divulgacandcontas.tse.jus.br/divulga/',
-              'Origin': 'https://divulgacandcontas.tse.jus.br',
               'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8',
           }
 
-          def fetch(url, accept=None, retries=3):
+          def fetch(url, accept='text/html,*/*;q=0.8', retries=4):
               headers = dict(HEADERS)
-              if accept:
-                  headers['Accept'] = accept
+              headers['Accept'] = accept
               last = None
               for attempt in range(retries):
                   try:
@@ -55,144 +50,134 @@ jobs:
                           return r.read(), dict(r.headers), r.geturl()
                   except Exception as e:
                       last = e
-                      print(f'Tentativa {attempt+1} falhou para {url}: {e}')
-                      time.sleep(1 + attempt)
+                      print(f'Tentativa {attempt+1}/{retries} falhou: {url} -> {e}')
+                      time.sleep(1.5 * (attempt + 1))
               raise last
 
-          raw, hdr, final_url = fetch(LIST_URL, 'application/json,text/plain,*/*')
-          data = json.loads(raw.decode('utf-8-sig'))
-          candidatos = data.get('candidatos', data if isinstance(data, list) else [])
-          if not candidatos:
-              raise SystemExit('A API não retornou candidatos para Deputado Estadual/PI.')
+          # O portal informa 151 candidaturas e pagina em 3 páginas.
+          listing_urls = [LIST_BASE, LIST_BASE + '/pagina/2', LIST_BASE + '/pagina/3']
+          profile_paths = []
+          for url in listing_urls:
+              raw, _, _ = fetch(url)
+              text = raw.decode('utf-8', errors='replace')
+              links = re.findall(r'href="(/eleicoes/2026/candidatos/[^"]+)"', text)
+              print(url, 'links encontrados:', len(links))
+              profile_paths.extend(links)
 
-          # Mantém apenas o cargo 7 / DEPUTADO ESTADUAL caso a API traga algo adicional.
-          filtrados = []
-          for c in candidatos:
-              cargo = c.get('cargo') or {}
-              cod = cargo.get('codigo') or cargo.get('id') or c.get('codigoCargo')
-              nomecargo = (cargo.get('nome') or c.get('descricaoCargo') or c.get('ds_CARGO') or '').upper()
-              if str(cod) == '7' or 'DEPUTADO ESTADUAL' in nomecargo or not (cod or nomecargo):
-                  filtrados.append(c)
-          candidatos = filtrados
+          # Deduplicação preservando a ordem alfabética apresentada pelo portal.
+          seen = set()
+          profiles = []
+          for p in profile_paths:
+              p = htmllib.unescape(p)
+              if p not in seen:
+                  seen.add(p)
+                  profiles.append(p)
 
-          print('Candidatos retornados pela API:', len(candidatos))
+          print('Perfis únicos encontrados:', len(profiles))
+          if len(profiles) < 140:
+              raise SystemExit(f'Quantidade de perfis inesperadamente baixa: {len(profiles)}')
+
           manifest = []
+          numeros_usados = set()
 
-          def detalhe(c):
-              cid = c.get('id') or c.get('sq_CANDIDATO') or c.get('sqCandidato')
-              if not cid:
-                  return c
-              url = BASE + f'/candidatura/buscar/2026/PI/20322002026/candidato/{cid}'
-              try:
-                  r, _, _ = fetch(url, 'application/json,text/plain,*/*')
-                  return json.loads(r.decode('utf-8-sig'))
-              except Exception as e:
-                  print('Falha detalhe', cid, e)
-                  return c
-
-          def normaliza_foto_url(url):
-              if not url:
-                  return None
-              url = str(url).strip()
-              if url.startswith('//'):
-                  return 'https:' + url
-              if url.startswith('http://'):
-                  return 'https://' + url[len('http://'):]
-              if url.startswith('/'):
-                  return urllib.parse.urljoin('https://divulgacandcontas.tse.jus.br', url)
-              if not url.startswith('http'):
-                  return urllib.parse.urljoin('https://divulgacandcontas.tse.jus.br/divulga/', url)
-              return url
-
-          def ext_from(content_type, url):
-              ct = (content_type or '').split(';')[0].strip().lower()
-              if ct == 'image/png': return '.png'
-              if ct in ('image/jpeg','image/jpg'): return '.jpg'
-              if ct == 'image/webp': return '.webp'
-              path_ext = Path(urllib.parse.urlparse(url).path).suffix.lower()
-              if path_ext in ('.jpg','.jpeg','.png','.webp'):
-                  return '.jpg' if path_ext == '.jpeg' else path_ext
-              return '.jpg'
-
-          for i, c in enumerate(sorted(candidatos, key=lambda x: int(str(x.get('numero') or x.get('nr_CANDIDATO') or '0').replace('.','')))):
-              numero = str(c.get('numero') or c.get('nr_CANDIDATO') or '').strip()
-              nome_urna = c.get('nomeUrna') or c.get('nm_URNA') or c.get('nome') or ''
-              nome_completo = c.get('nomeCompleto') or c.get('nm_CANDIDATO') or ''
-              partido_obj = c.get('partido') or {}
-              sigla = partido_obj.get('sigla') or c.get('sg_PARTIDO') or ''
-              cid = c.get('id') or c.get('sq_CANDIDATO') or c.get('sqCandidato') or ''
-              situacao = c.get('descricaoSituacao') or c.get('situacaoCandidato') or c.get('descricaoSituacaoCandidato') or ''
-              foto_url = c.get('fotoUrl') or c.get('urlFoto')
-
-              d = None
-              if not foto_url:
-                  d = detalhe(c)
-                  foto_url = d.get('fotoUrl') or d.get('urlFoto')
-                  if not nome_completo:
-                      nome_completo = d.get('nomeCompleto') or d.get('nm_CANDIDATO') or nome_completo
-                  if not sigla:
-                      sigla = (d.get('partido') or {}).get('sigla') or d.get('sg_PARTIDO') or sigla
-
-              foto_url = normaliza_foto_url(foto_url)
-              status = 'SEM_FOTO_URL'
-              arquivo = ''
+          for idx, path in enumerate(profiles, 1):
+              profile_url = urllib.parse.urljoin(SITE, path)
+              cid = path.split('/candidatos/', 1)[1].split('-', 1)[0]
+              status = 'OK'
               erro = ''
+              numero = ''
+              nome = ''
+              foto_url = ''
+              arquivo = ''
 
-              if numero and foto_url:
-                  try:
-                      img, ih, resolved = fetch(foto_url, 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8', retries=4)
-                      ctype = ih.get('Content-Type') or ih.get('content-type') or ''
-                      if len(img) < 100 or (ctype and 'image' not in ctype.lower()):
-                          raise ValueError(f'conteúdo inesperado: {ctype}, {len(img)} bytes')
-                      ext = ext_from(ctype, resolved)
-                      arquivo = f'{numero}{ext}'
-                      (OUT / arquivo).write_bytes(img)
-                      status = 'OK'
-                  except Exception as e:
-                      erro = repr(e)
-                      status = 'ERRO_DOWNLOAD'
+              try:
+                  raw, _, _ = fetch(profile_url)
+                  text = raw.decode('utf-8', errors='replace')
+
+                  title_match = re.search(r'<title>(.*?)</title>', text, flags=re.I|re.S)
+                  title = htmllib.unescape(re.sub(r'<[^>]+>', '', title_match.group(1))).strip() if title_match else ''
+                  m = re.match(r'(.+?)\s*\((\d{5})\)\s*[—-]', title)
+                  if not m:
+                      # Fallback no texto próximo ao h1.
+                      h1 = re.search(r'<h1[^>]*>(.*?)</h1>', text, flags=re.I|re.S)
+                      nome = htmllib.unescape(re.sub(r'<[^>]+>', '', h1.group(1))).strip() if h1 else ''
+                      body_plain = htmllib.unescape(re.sub(r'<[^>]+>', ' ', text))
+                      n = re.search(r'\b(\d{5})\b', body_plain)
+                      if not n:
+                          raise ValueError('Número eleitoral não localizado no perfil')
+                      numero = n.group(1)
+                  else:
+                      nome = m.group(1).strip()
+                      numero = m.group(2)
+
+                  if numero in numeros_usados:
+                      raise ValueError(f'Número duplicado detectado: {numero}')
+                  numeros_usados.add(numero)
+
+                  img_match = re.search(r'<img[^>]+class="[^"]*foto--destaque[^"]*"[^>]+src="([^"]+)"', text, flags=re.I)
+                  if not img_match:
+                      img_match = re.search(r'<img[^>]+src="([^"]*/fotos/[^"]+\.jpg[^\"]*)"[^>]+alt="Foto oficial', text, flags=re.I)
+                  src = htmllib.unescape(img_match.group(1)) if img_match else f'/fotos/{cid}.jpg'
+                  foto_url = urllib.parse.urljoin(SITE, src)
+
+                  img, hdr, resolved = fetch(foto_url, accept='image/jpeg,image/*;q=0.9,*/*;q=0.5')
+                  ctype = (hdr.get('Content-Type') or hdr.get('content-type') or '').lower()
+                  if len(img) < 500 or (ctype and 'image' not in ctype):
+                      raise ValueError(f'Arquivo de foto inválido: {ctype}, {len(img)} bytes')
+
+                  arquivo = f'{numero}.jpg'
+                  (OUT / arquivo).write_bytes(img)
+
+              except Exception as e:
+                  status = 'ERRO'
+                  erro = repr(e)
 
               manifest.append({
                   'NR_CANDIDATO': numero,
-                  'NM_URNA_CANDIDATO': nome_urna,
-                  'NM_CANDIDATO': nome_completo,
-                  'SG_PARTIDO': sigla,
-                  'SQ_CANDIDATO': cid,
-                  'SITUACAO': situacao,
-                  'FOTO_URL': foto_url or '',
+                  'NM_URNA_CANDIDATO': nome,
+                  'ID_PORTAL': cid,
                   'ARQUIVO_RENOMEADO': arquivo,
-                  'STATUS_FOTO': status,
+                  'FOTO_URL': foto_url,
+                  'PERFIL_URL': profile_url,
+                  'STATUS': status,
                   'ERRO': erro,
               })
-              print(f'[{i+1}/{len(candidatos)}] {numero} - {nome_urna}: {status}')
+              print(f'[{idx:03d}/{len(profiles)}] {numero or "?????"} - {nome or path}: {status}')
 
-          fields = ['NR_CANDIDATO','NM_URNA_CANDIDATO','NM_CANDIDATO','SG_PARTIDO','SQ_CANDIDATO','SITUACAO','FOTO_URL','ARQUIVO_RENOMEADO','STATUS_FOTO','ERRO']
-          with open(OUT/'manifesto.csv','w',encoding='utf-8-sig',newline='') as f:
-              w = csv.DictWriter(f,fieldnames=fields,delimiter=';')
-              w.writeheader(); w.writerows(manifest)
+          manifest.sort(key=lambda x: (int(x['NR_CANDIDATO']) if x['NR_CANDIDATO'].isdigit() else 999999, x['NM_URNA_CANDIDATO']))
+          fields = ['NR_CANDIDATO','NM_URNA_CANDIDATO','ID_PORTAL','ARQUIVO_RENOMEADO','FOTO_URL','PERFIL_URL','STATUS','ERRO']
+          with open(OUT / 'manifesto.csv', 'w', encoding='utf-8-sig', newline='') as f:
+              w = csv.DictWriter(f, fieldnames=fields, delimiter=';')
+              w.writeheader()
+              w.writerows(manifest)
 
-          ok = sum(1 for x in manifest if x['STATUS_FOTO']=='OK')
-          faltas = [x for x in manifest if x['STATUS_FOTO']!='OK']
-          with open(OUT/'RESUMO.txt','w',encoding='utf-8') as f:
-              f.write('Fonte: API oficial DivulgaCandContas/TSE 2026\n')
-              f.write('UF: PI\nCargo: DEPUTADO ESTADUAL (código 7)\n')
-              f.write(f'Candidatos retornados: {len(manifest)}\n')
-              f.write(f'Fotos baixadas e renomeadas: {ok}\n')
-              f.write(f'Fotos não baixadas: {len(faltas)}\n')
+          ok = [x for x in manifest if x['STATUS'] == 'OK']
+          faltas = [x for x in manifest if x['STATUS'] != 'OK']
+          with open(OUT / 'RESUMO.txt', 'w', encoding='utf-8') as f:
+              f.write('Deputado Estadual - Piauí - Eleições 2026\n')
+              f.write('Fotos oficiais publicadas pelo TSE, reproduzidas pelo Portal Eleições 2026.\n')
+              f.write('O TSE bloqueou acesso automatizado por IP de datacenter (HTTP 403), por isso a coleta usa o espelho que identifica cada imagem como foto oficial publicada pelo TSE.\n\n')
+              f.write(f'Perfis encontrados: {len(manifest)}\n')
+              f.write(f'Fotos baixadas e renomeadas pelo número: {len(ok)}\n')
+              f.write(f'Pendências: {len(faltas)}\n')
               if faltas:
                   f.write('\nPendências:\n')
                   for x in faltas:
-                      f.write(f"{x['NR_CANDIDATO']} - {x['NM_URNA_CANDIDATO']} - {x['STATUS_FOTO']} - {x['ERRO']}\n")
+                      f.write(f"{x['NR_CANDIDATO'] or 'SEM_NUMERO'} - {x['NM_URNA_CANDIDATO'] or x['PERFIL_URL']} - {x['ERRO']}\n")
 
-          print('TOTAL:', len(manifest), 'OK:', ok, 'PENDÊNCIAS:', len(faltas))
-          if ok == 0:
-              raise SystemExit('Nenhuma foto pôde ser baixada.')
+          print('RESULTADO FINAL -> perfis:', len(manifest), 'fotos OK:', len(ok), 'pendências:', len(faltas))
+          if len(ok) < 140:
+              raise SystemExit(f'Quantidade de fotos baixadas inesperadamente baixa: {len(ok)}')
           PY
 
-      - name: Compactar resultado
-        run: zip -r Fotos_Deputado_Estadual_PI_2026.zip Fotos_Deputado_Estadual_PI_2026
+      - name: Validar e compactar
+        shell: bash
+        run: |
+          echo "JPGs:" $(find Fotos_Deputado_Estadual_PI_2026 -maxdepth 1 -type f -name '*.jpg' | wc -l)
+          cat Fotos_Deputado_Estadual_PI_2026/RESUMO.txt
+          zip -r Fotos_Deputado_Estadual_PI_2026.zip Fotos_Deputado_Estadual_PI_2026
 
-      - name: Publicar artefato
+      - name: Publicar ZIP
         uses: actions/upload-artifact@v4
         with:
           name: Fotos_Deputado_Estadual_PI_2026
