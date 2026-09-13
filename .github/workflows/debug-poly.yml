@@ -1,4 +1,4 @@
-name: Debug Polyapoio API
+name: Debug espelho eleitoral
 on:
   push:
     branches: [coleta-fotos-tse-2026]
@@ -7,12 +7,18 @@ jobs:
   debug:
     runs-on: ubuntu-latest
     steps:
-      - name: Consultar descoberta
+      - name: Inspecionar portal espelho
         shell: bash
         run: |
           set -x
-          curl -L --fail-with-body -A 'Mozilla/5.0' 'https://polyapoio.com/ai/examples.json' | head -c 20000
-          echo '\n---SCHEMA---'
-          curl -L --fail-with-body -A 'Mozilla/5.0' 'https://polyapoio.com/ai/schema.json' | head -c 30000
-          echo '\n---CAP---'
-          curl -L --fail-with-body -A 'Mozilla/5.0' 'https://polyapoio.com/ai/capabilities.json' | head -c 20000
+          URL='https://resultadoseleicoes.com/eleicoes/2026/candidatos/01M0R2KMPM1Z0HYSG77REY2WKY-fabio-novo'
+          curl -L -A 'Mozilla/5.0' -sS -D headers.txt "$URL" -o page.html || true
+          echo '---HEADERS---'; cat headers.txt
+          echo '---SIZE---'; wc -c page.html || true
+          echo '---IMGS---'; grep -oE '<img[^>]+>' page.html | head -30 || true
+          echo '---URLS IMAGEM---'; grep -oE 'https?://[^"[:space:]<>]+' page.html | grep -Ei '\.(jpg|jpeg|png|webp)|image|foto' | head -50 || true
+          echo '---NEXT IMAGE---'; grep -oE '/_next/image\?[^" ]+' page.html | head -20 || true
+          echo '---CAND LIST---'
+          curl -L -A 'Mozilla/5.0' -sS 'https://resultadoseleicoes.com/eleicoes/2026/pi/deputado-estadual' -o list.html || true
+          wc -c list.html || true
+          grep -oE 'href="[^"]+"' list.html | grep '/candidatos/' | head -80 || true
