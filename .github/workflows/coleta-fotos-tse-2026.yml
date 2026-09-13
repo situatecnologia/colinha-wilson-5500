@@ -17,184 +17,176 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Baixar, filtrar e renomear fotos oficiais do TSE
+      - name: Baixar fotos pela API oficial DivulgaCandContas
         shell: bash
         run: |
           python - <<'PY'
           import csv
-          import io
+          import json
+          import mimetypes
           import os
-          import re
-          import shutil
-          import sys
+          import time
+          import urllib.parse
           import urllib.request
-          import zipfile
           from pathlib import Path
 
-          CAND_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip'
-          FOTO_URL = 'https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_PI_div.zip'
+          BASE = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1'
+          LIST_URL = BASE + '/candidatura/listar/2026/PI/20322002026/7/candidatos'
           OUT = Path('Fotos_Deputado_Estadual_PI_2026')
           OUT.mkdir(exist_ok=True)
 
-          def download(url, path):
-              print('Baixando:', url)
-              req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0'})
-              with urllib.request.urlopen(req, timeout=120) as r, open(path, 'wb') as f:
-                  shutil.copyfileobj(r, f)
-              print('OK', path, os.path.getsize(path), 'bytes')
+          HEADERS = {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/152 Safari/537.36',
+              'Accept': 'application/json,text/plain,*/*',
+              'Referer': 'https://divulgacandcontas.tse.jus.br/divulga/',
+              'Origin': 'https://divulgacandcontas.tse.jus.br',
+              'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8',
+          }
 
-          download(CAND_URL, 'consulta_cand_2026.zip')
-          download(FOTO_URL, 'foto_cand2026_PI_div.zip')
+          def fetch(url, accept=None, retries=3):
+              headers = dict(HEADERS)
+              if accept:
+                  headers['Accept'] = accept
+              last = None
+              for attempt in range(retries):
+                  try:
+                      req = urllib.request.Request(url, headers=headers)
+                      with urllib.request.urlopen(req, timeout=60) as r:
+                          return r.read(), dict(r.headers), r.geturl()
+                  except Exception as e:
+                      last = e
+                      print(f'Tentativa {attempt+1} falhou para {url}: {e}')
+                      time.sleep(1 + attempt)
+              raise last
 
-          # Localiza o CSV do Piauí dentro do ZIP oficial.
-          with zipfile.ZipFile('consulta_cand_2026.zip') as z:
-              names = z.namelist()
-              pi_csvs = [n for n in names if n.lower().endswith('.csv') and ('_pi.' in n.lower() or '_pi_' in n.lower() or n.lower().endswith('_pi.csv'))]
-              if not pi_csvs:
-                  # fallback: procura qualquer CSV e filtra por SG_UF depois
-                  pi_csvs = [n for n in names if n.lower().endswith('.csv')]
-              print('CSV(s) candidatos candidatos:', pi_csvs[:10])
+          raw, hdr, final_url = fetch(LIST_URL, 'application/json,text/plain,*/*')
+          data = json.loads(raw.decode('utf-8-sig'))
+          candidatos = data.get('candidatos', data if isinstance(data, list) else [])
+          if not candidatos:
+              raise SystemExit('A API não retornou candidatos para Deputado Estadual/PI.')
 
-              rows = []
-              header = None
-              used_csv = None
-              for cand_csv in pi_csvs:
-                  raw = z.read(cand_csv)
-                  text = None
-                  for enc in ('latin1','cp1252','utf-8-sig'):
-                      try:
-                          text = raw.decode(enc)
-                          break
-                      except UnicodeDecodeError:
-                          pass
-                  if text is None:
-                      continue
-                  reader = csv.DictReader(io.StringIO(text), delimiter=';')
-                  if not reader.fieldnames or 'SG_UF' not in reader.fieldnames or 'DS_CARGO' not in reader.fieldnames:
-                      continue
-                  tmp = [r for r in reader if r.get('SG_UF') == 'PI' and r.get('DS_CARGO') == 'DEPUTADO ESTADUAL']
-                  if tmp:
-                      rows = tmp
-                      header = reader.fieldnames
-                      used_csv = cand_csv
-                      break
+          # Mantém apenas o cargo 7 / DEPUTADO ESTADUAL caso a API traga algo adicional.
+          filtrados = []
+          for c in candidatos:
+              cargo = c.get('cargo') or {}
+              cod = cargo.get('codigo') or cargo.get('id') or c.get('codigoCargo')
+              nomecargo = (cargo.get('nome') or c.get('descricaoCargo') or c.get('ds_CARGO') or '').upper()
+              if str(cod) == '7' or 'DEPUTADO ESTADUAL' in nomecargo or not (cod or nomecargo):
+                  filtrados.append(c)
+          candidatos = filtrados
 
-          if not rows:
-              raise SystemExit('Nenhum candidato a DEPUTADO ESTADUAL/PI encontrado na base oficial.')
+          print('Candidatos retornados pela API:', len(candidatos))
+          manifest = []
 
-          print('CSV utilizado:', used_csv)
-          print('Total de registros de Deputado Estadual/PI:', len(rows))
+          def detalhe(c):
+              cid = c.get('id') or c.get('sq_CANDIDATO') or c.get('sqCandidato')
+              if not cid:
+                  return c
+              url = BASE + f'/candidatura/buscar/2026/PI/20322002026/candidato/{cid}'
+              try:
+                  r, _, _ = fetch(url, 'application/json,text/plain,*/*')
+                  return json.loads(r.decode('utf-8-sig'))
+              except Exception as e:
+                  print('Falha detalhe', cid, e)
+                  return c
 
-          # Índices para localizar as fotos independentemente do padrão exato do nome do arquivo.
-          by_sq = {str(r['SQ_CANDIDATO']).strip(): r for r in rows if r.get('SQ_CANDIDATO')}
-          by_num = {str(r['NR_CANDIDATO']).strip(): r for r in rows if r.get('NR_CANDIDATO')}
+          def normaliza_foto_url(url):
+              if not url:
+                  return None
+              url = str(url).strip()
+              if url.startswith('//'):
+                  return 'https:' + url
+              if url.startswith('http://'):
+                  return 'https://' + url[len('http://'):]
+              if url.startswith('/'):
+                  return urllib.parse.urljoin('https://divulgacandcontas.tse.jus.br', url)
+              if not url.startswith('http'):
+                  return urllib.parse.urljoin('https://divulgacandcontas.tse.jus.br/divulga/', url)
+              return url
 
-          with zipfile.ZipFile('foto_cand2026_PI_div.zip') as zf:
-              image_names = [n for n in zf.namelist() if Path(n).suffix.lower() in ('.jpg','.jpeg','.png')]
-              print('Total de imagens no pacote PI:', len(image_names))
-              print('Amostra nomes:', image_names[:20])
+          def ext_from(content_type, url):
+              ct = (content_type or '').split(';')[0].strip().lower()
+              if ct == 'image/png': return '.png'
+              if ct in ('image/jpeg','image/jpg'): return '.jpg'
+              if ct == 'image/webp': return '.webp'
+              path_ext = Path(urllib.parse.urlparse(url).path).suffix.lower()
+              if path_ext in ('.jpg','.jpeg','.png','.webp'):
+                  return '.jpg' if path_ext == '.jpeg' else path_ext
+              return '.jpg'
 
-              matches = {}
-              used_originals = set()
+          for i, c in enumerate(sorted(candidatos, key=lambda x: int(str(x.get('numero') or x.get('nr_CANDIDATO') or '0').replace('.','')))):
+              numero = str(c.get('numero') or c.get('nr_CANDIDATO') or '').strip()
+              nome_urna = c.get('nomeUrna') or c.get('nm_URNA') or c.get('nome') or ''
+              nome_completo = c.get('nomeCompleto') or c.get('nm_CANDIDATO') or ''
+              partido_obj = c.get('partido') or {}
+              sigla = partido_obj.get('sigla') or c.get('sg_PARTIDO') or ''
+              cid = c.get('id') or c.get('sq_CANDIDATO') or c.get('sqCandidato') or ''
+              situacao = c.get('descricaoSituacao') or c.get('situacaoCandidato') or c.get('descricaoSituacaoCandidato') or ''
+              foto_url = c.get('fotoUrl') or c.get('urlFoto')
 
-              # 1) Preferência: SQ_CANDIDATO aparece no nome do arquivo (padrão usual do TSE).
-              for img in image_names:
-                  stem = Path(img).stem
-                  digits = ''.join(re.findall(r'\d+', stem))
-                  candidates = []
-                  for sq, r in by_sq.items():
-                      if sq and (sq in stem or sq in digits):
-                          candidates.append((len(sq), r))
-                  if candidates:
-                      candidates.sort(reverse=True, key=lambda x: x[0])
-                      r = candidates[0][1]
-                      num = str(r['NR_CANDIDATO']).strip()
-                      if num not in matches:
-                          matches[num] = (r, img)
-                          used_originals.add(img)
+              d = None
+              if not foto_url:
+                  d = detalhe(c)
+                  foto_url = d.get('fotoUrl') or d.get('urlFoto')
+                  if not nome_completo:
+                      nome_completo = d.get('nomeCompleto') or d.get('nm_CANDIDATO') or nome_completo
+                  if not sigla:
+                      sigla = (d.get('partido') or {}).get('sigla') or d.get('sg_PARTIDO') or sigla
 
-              # 2) Fallback: número do candidato aparece isolado no nome da imagem.
-              for img in image_names:
-                  if img in used_originals:
-                      continue
-                  stem = Path(img).stem
-                  tokens = re.findall(r'\d+', stem)
-                  for tok in tokens:
-                      if tok in by_num and tok not in matches:
-                          r = by_num[tok]
-                          matches[tok] = (r, img)
-                          used_originals.add(img)
-                          break
+              foto_url = normaliza_foto_url(foto_url)
+              status = 'SEM_FOTO_URL'
+              arquivo = ''
+              erro = ''
 
-              # 3) Fallback adicional: busca por sufixo/trecho numérico do SQ.
-              unmatched_nums = [n for n in by_num if n not in matches]
-              for num in unmatched_nums:
-                  r = by_num[num]
-                  sq = str(r.get('SQ_CANDIDATO','')).strip()
-                  if not sq:
-                      continue
-                  sq_tail = sq[-10:]
-                  for img in image_names:
-                      if img in used_originals:
-                          continue
-                      dig = ''.join(re.findall(r'\d+', Path(img).stem))
-                      if sq_tail and sq_tail in dig:
-                          matches[num] = (r, img)
-                          used_originals.add(img)
-                          break
+              if numero and foto_url:
+                  try:
+                      img, ih, resolved = fetch(foto_url, 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8', retries=4)
+                      ctype = ih.get('Content-Type') or ih.get('content-type') or ''
+                      if len(img) < 100 or (ctype and 'image' not in ctype.lower()):
+                          raise ValueError(f'conteúdo inesperado: {ctype}, {len(img)} bytes')
+                      ext = ext_from(ctype, resolved)
+                      arquivo = f'{numero}{ext}'
+                      (OUT / arquivo).write_bytes(img)
+                      status = 'OK'
+                  except Exception as e:
+                      erro = repr(e)
+                      status = 'ERRO_DOWNLOAD'
 
-              manifest = []
-              for r in sorted(rows, key=lambda x: int(x['NR_CANDIDATO'])):
-                  num = str(r['NR_CANDIDATO']).strip()
-                  item = {
-                      'NR_CANDIDATO': num,
-                      'NM_URNA_CANDIDATO': r.get('NM_URNA_CANDIDATO',''),
-                      'NM_CANDIDATO': r.get('NM_CANDIDATO',''),
-                      'SG_PARTIDO': r.get('SG_PARTIDO',''),
-                      'SQ_CANDIDATO': r.get('SQ_CANDIDATO',''),
-                      'DS_SITUACAO_CANDIDATURA': r.get('DS_SITUACAO_CANDIDATURA',''),
-                      'ARQUIVO_RENOMEADO': '',
-                      'ARQUIVO_ORIGINAL': '',
-                      'STATUS_FOTO': 'SEM_FOTO_LOCALIZADA',
-                  }
-                  if num in matches:
-                      rr, img = matches[num]
-                      ext = Path(img).suffix.lower()
-                      if ext == '.jpeg':
-                          ext = '.jpg'
-                      dest = OUT / f'{num}{ext}'
-                      with zf.open(img) as src, open(dest, 'wb') as dst:
-                          shutil.copyfileobj(src, dst)
-                      item['ARQUIVO_RENOMEADO'] = dest.name
-                      item['ARQUIVO_ORIGINAL'] = img
-                      item['STATUS_FOTO'] = 'OK'
-                  manifest.append(item)
+              manifest.append({
+                  'NR_CANDIDATO': numero,
+                  'NM_URNA_CANDIDATO': nome_urna,
+                  'NM_CANDIDATO': nome_completo,
+                  'SG_PARTIDO': sigla,
+                  'SQ_CANDIDATO': cid,
+                  'SITUACAO': situacao,
+                  'FOTO_URL': foto_url or '',
+                  'ARQUIVO_RENOMEADO': arquivo,
+                  'STATUS_FOTO': status,
+                  'ERRO': erro,
+              })
+              print(f'[{i+1}/{len(candidatos)}] {numero} - {nome_urna}: {status}')
 
-          # CSV de conferência em UTF-8 com BOM para abrir bem no Excel.
-          fields = ['NR_CANDIDATO','NM_URNA_CANDIDATO','NM_CANDIDATO','SG_PARTIDO','SQ_CANDIDATO','DS_SITUACAO_CANDIDATURA','ARQUIVO_RENOMEADO','ARQUIVO_ORIGINAL','STATUS_FOTO']
+          fields = ['NR_CANDIDATO','NM_URNA_CANDIDATO','NM_CANDIDATO','SG_PARTIDO','SQ_CANDIDATO','SITUACAO','FOTO_URL','ARQUIVO_RENOMEADO','STATUS_FOTO','ERRO']
           with open(OUT/'manifesto.csv','w',encoding='utf-8-sig',newline='') as f:
-              w=csv.DictWriter(f,fieldnames=fields,delimiter=';')
+              w = csv.DictWriter(f,fieldnames=fields,delimiter=';')
               w.writeheader(); w.writerows(manifest)
 
           ok = sum(1 for x in manifest if x['STATUS_FOTO']=='OK')
-          missing = [x for x in manifest if x['STATUS_FOTO']!='OK']
+          faltas = [x for x in manifest if x['STATUS_FOTO']!='OK']
           with open(OUT/'RESUMO.txt','w',encoding='utf-8') as f:
-              f.write(f'Fonte: TSE - Dados Abertos / DivulgaCandContas 2026\n')
-              f.write(f'UF: PI\nCargo: DEPUTADO ESTADUAL\n')
-              f.write(f'Registros encontrados: {len(rows)}\n')
-              f.write(f'Fotos renomeadas: {ok}\n')
-              f.write(f'Sem foto localizada: {len(missing)}\n')
-              if missing:
-                  f.write('\nSem foto:\n')
-                  for x in missing:
-                      f.write(f"{x['NR_CANDIDATO']} - {x['NM_URNA_CANDIDATO']} - {x['SQ_CANDIDATO']}\n")
+              f.write('Fonte: API oficial DivulgaCandContas/TSE 2026\n')
+              f.write('UF: PI\nCargo: DEPUTADO ESTADUAL (código 7)\n')
+              f.write(f'Candidatos retornados: {len(manifest)}\n')
+              f.write(f'Fotos baixadas e renomeadas: {ok}\n')
+              f.write(f'Fotos não baixadas: {len(faltas)}\n')
+              if faltas:
+                  f.write('\nPendências:\n')
+                  for x in faltas:
+                      f.write(f"{x['NR_CANDIDATO']} - {x['NM_URNA_CANDIDATO']} - {x['STATUS_FOTO']} - {x['ERRO']}\n")
 
-          print('Fotos renomeadas:', ok)
-          print('Sem foto localizada:', len(missing))
-          if missing:
-              print('Candidatos sem foto:', [(x['NR_CANDIDATO'], x['NM_URNA_CANDIDATO'], x['SQ_CANDIDATO']) for x in missing])
-
-          # Não falha se houver alguma candidatura sem foto; o manifesto registra a exceção.
+          print('TOTAL:', len(manifest), 'OK:', ok, 'PENDÊNCIAS:', len(faltas))
+          if ok == 0:
+              raise SystemExit('Nenhuma foto pôde ser baixada.')
           PY
 
       - name: Compactar resultado
