@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#ff7437">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Colinha - Wilson Martins 5500</title>
-<!-- V2.7.8 -->
+<!-- V2.7.9 -->
 <meta name="description" content="Monte sua colinha de votação com Wilson Martins 5500 para Deputado Federal.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Colinha - Wilson Martins 5500">
@@ -416,6 +416,7 @@ function drawDigits(){
 }
 function drawPhotos(){
   ORDER.forEach(id=>{
+    if(id==="senador2"&&senatorDuplicate(id))return;
     const c=uniqueCandidate(id,getValue(id));
     if(c&&c.foto){
       const im=preloadPhoto(c.foto);
@@ -550,11 +551,11 @@ function updateProgress(){
 function saveLocal(){
   const d={};
   ORDER.forEach(id=>d[id]=getValue(id));
-  localStorage.setItem("wm5500-v278",JSON.stringify(d))
+  localStorage.setItem("wm5500-v279",JSON.stringify(d))
 }
 function loadLocal(){
   try{
-    const d=JSON.parse(localStorage.getItem("wm5500-v278")||"{}");
+    const d=JSON.parse(localStorage.getItem("wm5500-v279")||"{}");
     ORDER.forEach(id=>{if(d[id])document.getElementById(id).value=digitsOnly(d[id],SPECS[id].len)})
   }catch(e){}
 }
@@ -617,7 +618,7 @@ async function copyList(){
 function resetAll(){
   if(!confirm("Limpar todos os números preenchidos?"))return;
   ORDER.forEach(id=>document.getElementById(id).value="");
-  localStorage.removeItem("wm5500-v278");
+  localStorage.removeItem("wm5500-v279");
   updateAll();
   estadual.focus()
 }
