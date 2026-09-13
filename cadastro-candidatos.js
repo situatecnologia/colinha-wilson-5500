@@ -179,7 +179,7 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "111",
     "nome": "CIRO NOGUEIRA",
     "coligacao": "JUNTOS PELO PIAUÍ",
-    "foto": ""
+    "foto": "assets/candidatos/111.jpg"
   },
   {
     "cargo": "senador",
