@@ -1,0 +1,209 @@
+name: Coleta fotos TSE 2026 PI
+
+on:
+  push:
+    branches:
+      - coleta-fotos-tse-2026
+    paths:
+      - '.github/workflows/coleta-fotos-tse-2026.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Baixar, filtrar e renomear fotos oficiais do TSE
+        shell: bash
+        run: |
+          python - <<'PY'
+          import csv
+          import io
+          import os
+          import re
+          import shutil
+          import sys
+          import urllib.request
+          import zipfile
+          from pathlib import Path
+
+          CAND_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip'
+          FOTO_URL = 'https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_PI_div.zip'
+          OUT = Path('Fotos_Deputado_Estadual_PI_2026')
+          OUT.mkdir(exist_ok=True)
+
+          def download(url, path):
+              print('Baixando:', url)
+              req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0'})
+              with urllib.request.urlopen(req, timeout=120) as r, open(path, 'wb') as f:
+                  shutil.copyfileobj(r, f)
+              print('OK', path, os.path.getsize(path), 'bytes')
+
+          download(CAND_URL, 'consulta_cand_2026.zip')
+          download(FOTO_URL, 'foto_cand2026_PI_div.zip')
+
+          # Localiza o CSV do Piauí dentro do ZIP oficial.
+          with zipfile.ZipFile('consulta_cand_2026.zip') as z:
+              names = z.namelist()
+              pi_csvs = [n for n in names if n.lower().endswith('.csv') and ('_pi.' in n.lower() or '_pi_' in n.lower() or n.lower().endswith('_pi.csv'))]
+              if not pi_csvs:
+                  # fallback: procura qualquer CSV e filtra por SG_UF depois
+                  pi_csvs = [n for n in names if n.lower().endswith('.csv')]
+              print('CSV(s) candidatos candidatos:', pi_csvs[:10])
+
+              rows = []
+              header = None
+              used_csv = None
+              for cand_csv in pi_csvs:
+                  raw = z.read(cand_csv)
+                  text = None
+                  for enc in ('latin1','cp1252','utf-8-sig'):
+                      try:
+                          text = raw.decode(enc)
+                          break
+                      except UnicodeDecodeError:
+                          pass
+                  if text is None:
+                      continue
+                  reader = csv.DictReader(io.StringIO(text), delimiter=';')
+                  if not reader.fieldnames or 'SG_UF' not in reader.fieldnames or 'DS_CARGO' not in reader.fieldnames:
+                      continue
+                  tmp = [r for r in reader if r.get('SG_UF') == 'PI' and r.get('DS_CARGO') == 'DEPUTADO ESTADUAL']
+                  if tmp:
+                      rows = tmp
+                      header = reader.fieldnames
+                      used_csv = cand_csv
+                      break
+
+          if not rows:
+              raise SystemExit('Nenhum candidato a DEPUTADO ESTADUAL/PI encontrado na base oficial.')
+
+          print('CSV utilizado:', used_csv)
+          print('Total de registros de Deputado Estadual/PI:', len(rows))
+
+          # Índices para localizar as fotos independentemente do padrão exato do nome do arquivo.
+          by_sq = {str(r['SQ_CANDIDATO']).strip(): r for r in rows if r.get('SQ_CANDIDATO')}
+          by_num = {str(r['NR_CANDIDATO']).strip(): r for r in rows if r.get('NR_CANDIDATO')}
+
+          with zipfile.ZipFile('foto_cand2026_PI_div.zip') as zf:
+              image_names = [n for n in zf.namelist() if Path(n).suffix.lower() in ('.jpg','.jpeg','.png')]
+              print('Total de imagens no pacote PI:', len(image_names))
+              print('Amostra nomes:', image_names[:20])
+
+              matches = {}
+              used_originals = set()
+
+              # 1) Preferência: SQ_CANDIDATO aparece no nome do arquivo (padrão usual do TSE).
+              for img in image_names:
+                  stem = Path(img).stem
+                  digits = ''.join(re.findall(r'\d+', stem))
+                  candidates = []
+                  for sq, r in by_sq.items():
+                      if sq and (sq in stem or sq in digits):
+                          candidates.append((len(sq), r))
+                  if candidates:
+                      candidates.sort(reverse=True, key=lambda x: x[0])
+                      r = candidates[0][1]
+                      num = str(r['NR_CANDIDATO']).strip()
+                      if num not in matches:
+                          matches[num] = (r, img)
+                          used_originals.add(img)
+
+              # 2) Fallback: número do candidato aparece isolado no nome da imagem.
+              for img in image_names:
+                  if img in used_originals:
+                      continue
+                  stem = Path(img).stem
+                  tokens = re.findall(r'\d+', stem)
+                  for tok in tokens:
+                      if tok in by_num and tok not in matches:
+                          r = by_num[tok]
+                          matches[tok] = (r, img)
+                          used_originals.add(img)
+                          break
+
+              # 3) Fallback adicional: busca por sufixo/trecho numérico do SQ.
+              unmatched_nums = [n for n in by_num if n not in matches]
+              for num in unmatched_nums:
+                  r = by_num[num]
+                  sq = str(r.get('SQ_CANDIDATO','')).strip()
+                  if not sq:
+                      continue
+                  sq_tail = sq[-10:]
+                  for img in image_names:
+                      if img in used_originals:
+                          continue
+                      dig = ''.join(re.findall(r'\d+', Path(img).stem))
+                      if sq_tail and sq_tail in dig:
+                          matches[num] = (r, img)
+                          used_originals.add(img)
+                          break
+
+              manifest = []
+              for r in sorted(rows, key=lambda x: int(x['NR_CANDIDATO'])):
+                  num = str(r['NR_CANDIDATO']).strip()
+                  item = {
+                      'NR_CANDIDATO': num,
+                      'NM_URNA_CANDIDATO': r.get('NM_URNA_CANDIDATO',''),
+                      'NM_CANDIDATO': r.get('NM_CANDIDATO',''),
+                      'SG_PARTIDO': r.get('SG_PARTIDO',''),
+                      'SQ_CANDIDATO': r.get('SQ_CANDIDATO',''),
+                      'DS_SITUACAO_CANDIDATURA': r.get('DS_SITUACAO_CANDIDATURA',''),
+                      'ARQUIVO_RENOMEADO': '',
+                      'ARQUIVO_ORIGINAL': '',
+                      'STATUS_FOTO': 'SEM_FOTO_LOCALIZADA',
+                  }
+                  if num in matches:
+                      rr, img = matches[num]
+                      ext = Path(img).suffix.lower()
+                      if ext == '.jpeg':
+                          ext = '.jpg'
+                      dest = OUT / f'{num}{ext}'
+                      with zf.open(img) as src, open(dest, 'wb') as dst:
+                          shutil.copyfileobj(src, dst)
+                      item['ARQUIVO_RENOMEADO'] = dest.name
+                      item['ARQUIVO_ORIGINAL'] = img
+                      item['STATUS_FOTO'] = 'OK'
+                  manifest.append(item)
+
+          # CSV de conferência em UTF-8 com BOM para abrir bem no Excel.
+          fields = ['NR_CANDIDATO','NM_URNA_CANDIDATO','NM_CANDIDATO','SG_PARTIDO','SQ_CANDIDATO','DS_SITUACAO_CANDIDATURA','ARQUIVO_RENOMEADO','ARQUIVO_ORIGINAL','STATUS_FOTO']
+          with open(OUT/'manifesto.csv','w',encoding='utf-8-sig',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,delimiter=';')
+              w.writeheader(); w.writerows(manifest)
+
+          ok = sum(1 for x in manifest if x['STATUS_FOTO']=='OK')
+          missing = [x for x in manifest if x['STATUS_FOTO']!='OK']
+          with open(OUT/'RESUMO.txt','w',encoding='utf-8') as f:
+              f.write(f'Fonte: TSE - Dados Abertos / DivulgaCandContas 2026\n')
+              f.write(f'UF: PI\nCargo: DEPUTADO ESTADUAL\n')
+              f.write(f'Registros encontrados: {len(rows)}\n')
+              f.write(f'Fotos renomeadas: {ok}\n')
+              f.write(f'Sem foto localizada: {len(missing)}\n')
+              if missing:
+                  f.write('\nSem foto:\n')
+                  for x in missing:
+                      f.write(f"{x['NR_CANDIDATO']} - {x['NM_URNA_CANDIDATO']} - {x['SQ_CANDIDATO']}\n")
+
+          print('Fotos renomeadas:', ok)
+          print('Sem foto localizada:', len(missing))
+          if missing:
+              print('Candidatos sem foto:', [(x['NR_CANDIDATO'], x['NM_URNA_CANDIDATO'], x['SQ_CANDIDATO']) for x in missing])
+
+          # Não falha se houver alguma candidatura sem foto; o manifesto registra a exceção.
+          PY
+
+      - name: Compactar resultado
+        run: zip -r Fotos_Deputado_Estadual_PI_2026.zip Fotos_Deputado_Estadual_PI_2026
+
+      - name: Publicar artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: Fotos_Deputado_Estadual_PI_2026
+          path: Fotos_Deputado_Estadual_PI_2026.zip
+          if-no-files-found: error
+          retention-days: 7
