@@ -1,0 +1,18 @@
+name: Debug Polyapoio API
+on:
+  push:
+    branches: [coleta-fotos-tse-2026]
+    paths: ['.github/workflows/debug-poly.yml']
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consultar descoberta
+        shell: bash
+        run: |
+          set -x
+          curl -L --fail-with-body -A 'Mozilla/5.0' 'https://polyapoio.com/ai/examples.json' | head -c 20000
+          echo '\n---SCHEMA---'
+          curl -L --fail-with-body -A 'Mozilla/5.0' 'https://polyapoio.com/ai/schema.json' | head -c 30000
+          echo '\n---CAP---'
+          curl -L --fail-with-body -A 'Mozilla/5.0' 'https://polyapoio.com/ai/capabilities.json' | head -c 20000
