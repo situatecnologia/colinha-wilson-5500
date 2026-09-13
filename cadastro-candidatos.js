@@ -298,105 +298,105 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "22202",
     "nome": "ADELMAZIN DA SAÚDE",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22202.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22789",
     "nome": "ALBERTO SILVA",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22789.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "44123",
     "nome": "ANA CAMBOA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/44123.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15110",
     "nome": "ANA PAULA",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15110.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45678",
     "nome": "ANATOLI FRANCE",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45678.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11022",
     "nome": "ANDRÉ NOGUEIRA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11022.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45666",
     "nome": "ANTÔNIO MUNIZ",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45666.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15199",
     "nome": "ANYARA SANTOS",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15199.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "50500",
     "nome": "ARIANA MONTEIRO",
     "coligacao": "FEDERAÇÃO PSOL REDE(PSOL/REDE)",
-    "foto": ""
+    "foto": "assets/candidatos/50500.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "13222",
     "nome": "ASSUNÇÃO AGUIAR",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13222.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15132",
     "nome": "AVELAR FERREIRA",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15132.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11456",
     "nome": "BIBI ALCILENE",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11456.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11711",
     "nome": "BISPO RILDO CARDOSO",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11711.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11800",
     "nome": "BOB GUERREIRO",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11800.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "43000",
     "nome": "BRENO MACÊDO",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/43000.jpg"
   },
   {
     "cargo": "estadual",
@@ -410,56 +410,56 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "15677",
     "nome": "CHICO MONTEIRO",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15677.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11233",
     "nome": "CHICO PANÇA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11233.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45555",
     "nome": "CHICO TANAZO",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45555.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "50123",
     "nome": "CIDA THERESINA",
     "coligacao": "FEDERAÇÃO PSOL REDE(PSOL/REDE)",
-    "foto": ""
+    "foto": "assets/candidatos/50123.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55222",
     "nome": "CORONEL FEITOSA",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55222.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "65000",
     "nome": "DANIELL DA MARIINHA",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/65000.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "50000",
     "nome": "DERI SOUSA",
     "coligacao": "FEDERAÇÃO PSOL REDE(PSOL/REDE)",
-    "foto": ""
+    "foto": "assets/candidatos/50000.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15777",
     "nome": "DEUSA PAZOLI",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15777.jpg"
   },
   {
     "cargo": "estadual",
@@ -473,7 +473,7 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "11222",
     "nome": "DR. ERIVELTO BARROS",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11222.jpg"
   },
   {
     "cargo": "estadual",
@@ -501,14 +501,14 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "45567",
     "nome": "DR. SAMUEL REGO",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45567.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "13999",
     "nome": "DR. THALES COELHO",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13999.jpg"
   },
   {
     "cargo": "estadual",
@@ -522,14 +522,14 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "11221",
     "nome": "DRA. ANDREIA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11221.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11777",
     "nome": "DRA. DEBORA CARVALHO",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11777.jpg"
   },
   {
     "cargo": "estadual",
@@ -543,63 +543,63 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "45123",
     "nome": "EDINO NEIVA",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45123.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45777",
     "nome": "EDMILSON DA PROJET",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45777.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "65123",
     "nome": "ELISÂNGELA MOURA",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/65123.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45020",
     "nome": "ELOIZA MELO",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45020.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "13333",
     "nome": "ELZUILA CALISTO",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13333.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15333",
     "nome": "ENÉAS MAIA",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15333.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55050",
     "nome": "ENFERMEIRA TATIANA",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55050.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "43123",
     "nome": "ENZO SAMUEL",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/43123.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22234",
     "nome": "ERTIMA",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22234.jpg"
   },
   {
     "cargo": "estadual",
@@ -613,7 +613,7 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "70000",
     "nome": "FABIO JUNIOR",
     "coligacao": "AVANTE",
-    "foto": ""
+    "foto": "assets/candidatos/70000.jpg"
   },
   {
     "cargo": "estadual",
@@ -627,91 +627,91 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "13777",
     "nome": "FÁBIO XAVIER",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13777.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "13900",
     "nome": "FABÍOLA",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13900.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "13789",
     "nome": "FIRMINO PAULO",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13789.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22111",
     "nome": "FLÁVIA MOITA",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22111.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "13258",
     "nome": "FLÁVIO JÚNIOR",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13258.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22555",
     "nome": "FRANCISCO JUNIOR VET",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22555.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22777",
     "nome": "FRIDA DE DIREITA",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22777.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11500",
     "nome": "GABRIEL COSTA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11500.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15233",
     "nome": "GD",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15233.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22000",
     "nome": "GLÓRIA BORGES",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22000.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15130",
     "nome": "GRACINHA MÃO SANTA",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15130.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11111",
     "nome": "GUSTAVO NEIVA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11111.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11333",
     "nome": "HALLYSON DA MATA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11333.jpg"
   },
   {
     "cargo": "estadual",
@@ -739,21 +739,21 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "22221",
     "nome": "IRMÃ FRANCISCA",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22221.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "70111",
     "nome": "ISLÂNDIA PIAUILINO",
     "coligacao": "AVANTE",
-    "foto": ""
+    "foto": "assets/candidatos/70111.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22822",
     "nome": "JACIEL SILVA",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22822.jpg"
   },
   {
     "cargo": "estadual",
@@ -767,7 +767,7 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "70733",
     "nome": "JOÃO CAVALCANTE",
     "coligacao": "AVANTE",
-    "foto": ""
+    "foto": "assets/candidatos/70733.jpg"
   },
   {
     "cargo": "estadual",
@@ -781,28 +781,28 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "55111",
     "nome": "JOÃOZINHO UNIMAGEM DA PARNAÍBA",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55111.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11888",
     "nome": "JONAS BARROSO",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11888.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45111",
     "nome": "JOSÉ CARLOS",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45111.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45165",
     "nome": "JOSELITO DO POVÃO",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45165.jpg"
   },
   {
     "cargo": "estadual",
@@ -816,49 +816,49 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "11444",
     "nome": "JÚNIOR PERCY",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11444.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "70110",
     "nome": "JÚNIOR ROCHA",
     "coligacao": "AVANTE",
-    "foto": ""
+    "foto": "assets/candidatos/70110.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15190",
     "nome": "JÚNIOR TRINCA",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15190.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11441",
     "nome": "JURACI DO PIAUÍ",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11441.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22444",
     "nome": "LANNA CAMPOS",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22444.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11345",
     "nome": "LARISSA FREIRE",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11345.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "13313",
     "nome": "LEIDA DINIZ",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13313.jpg"
   },
   {
     "cargo": "estadual",
@@ -872,42 +872,42 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "11122",
     "nome": "LYTSON BRENO",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11122.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55666",
     "nome": "MÃE RUTHNEIA",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55666.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22026",
     "nome": "MARAZZO",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22026.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45000",
     "nome": "MARCIA GUERREIRA",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45000.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "70222",
     "nome": "MARCOS CANGURU",
     "coligacao": "AVANTE",
-    "foto": ""
+    "foto": "assets/candidatos/70222.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55456",
     "nome": "MARDEN MENEZES",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55456.jpg"
   },
   {
     "cargo": "estadual",
@@ -921,56 +921,56 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "15112",
     "nome": "MAURO TAPETY",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15112.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "50005",
     "nome": "MAY SILVA",
     "coligacao": "FEDERAÇÃO PSOL REDE(PSOL/REDE)",
-    "foto": ""
+    "foto": "assets/candidatos/50005.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11100",
     "nome": "MISSIONÁRIA DÉBORA PAIVA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11100.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "44789",
     "nome": "NATRÍCIO",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/44789.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "13131",
     "nome": "NAYARA COSTA",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13131.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22122",
     "nome": "NEL LOPES",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22122.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45444",
     "nome": "NEMAURA SANTOS",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45444.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55678",
     "nome": "NENEN DE EDITE",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55678.jpg"
   },
   {
     "cargo": "estadual",
@@ -984,154 +984,154 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "70555",
     "nome": "NERYANE COSTA",
     "coligacao": "AVANTE",
-    "foto": ""
+    "foto": "assets/candidatos/70555.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45765",
     "nome": "NETO PEREIRA",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45765.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15678",
     "nome": "NILDA NUNES",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15678.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22222",
     "nome": "OSIAS AGUIAR",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22222.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "70190",
     "nome": "OTONIEL CHAGAS BISNETO",
     "coligacao": "AVANTE",
-    "foto": ""
+    "foto": "assets/candidatos/70190.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15789",
     "nome": "PASTOR GESSIVALDO ISAIAS",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15789.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45888",
     "nome": "PASTORA DEISY",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45888.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45222",
     "nome": "PASTORA LÚCIA",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45222.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11007",
     "nome": "PEDRO ALCÂNTARA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11007.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22333",
     "nome": "PEDRO AYRES",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22333.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11000",
     "nome": "PETRUS EVELYN (O PIAUIENSE)",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11000.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15520",
     "nome": "POLIANA AGUIAR",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15520.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45456",
     "nome": "PROFESSOR IRAL",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45456.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "70888",
     "nome": "PROFESSOR ZENIVAN",
     "coligacao": "AVANTE",
-    "foto": ""
+    "foto": "assets/candidatos/70888.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55556",
     "nome": "PROFESSORA ZILDÊNIA",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55556.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "44700",
     "nome": "QUEM QUEM",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/44700.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11123",
     "nome": "RAIMUNDO SOUSA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11123.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55655",
     "nome": "RICARDO VERAS",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55655.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11555",
     "nome": "ROBERTO LEÃO",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11555.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55999",
     "nome": "RODRIGÃO DA KARYNE",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55999.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "45333",
     "nome": "RONNIE COSTA",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/45333.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "13300",
     "nome": "ROSALINA SANTOS",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13300.jpg"
   },
   {
     "cargo": "estadual",
@@ -1145,21 +1145,21 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "22123",
     "nome": "SAMUEL COÊLHO",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22123.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15888",
     "nome": "SAVIA CASTRO",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15888.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55234",
     "nome": "SÉFORA FERREIRA",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55234.jpg"
   },
   {
     "cargo": "estadual",
@@ -1173,14 +1173,14 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "13771",
     "nome": "SGT ELIZANGELA",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/13771.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "22022",
     "nome": "SIDNEI BONACOLSI",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22022.jpg"
   },
   {
     "cargo": "estadual",
@@ -1194,42 +1194,42 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "22345",
     "nome": "SUDÁRIO",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22345.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "50199",
     "nome": "SULAMITA BARBOSA",
     "coligacao": "FEDERAÇÃO PSOL REDE(PSOL/REDE)",
-    "foto": ""
+    "foto": "assets/candidatos/50199.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11411",
     "nome": "SUZANE CARDOSO",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11411.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "43333",
     "nome": "TERESA BRITTO",
     "coligacao": "FEDERAÇÃO BRASIL DA ESPERANÇA - FE BRASIL(PT/PC do B/PV)",
-    "foto": ""
+    "foto": "assets/candidatos/43333.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11011",
     "nome": "TEX WILLER",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11011.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15111",
     "nome": "THEMÍSTOCLES FILHO",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15111.jpg"
   },
   {
     "cargo": "estadual",
@@ -1243,49 +1243,49 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "44567",
     "nome": "TINA DOS CARROCEIROS",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/44567.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11223",
     "nome": "TINA DUARTE",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11223.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55789",
     "nome": "TONINHO DE CARIDADE",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55789.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11999",
     "nome": "TRABULO NETO",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11999.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "11126",
     "nome": "VAL VIEIRA",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11126.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15567",
     "nome": "VALDENE BRITO",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15567.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55888",
     "nome": "VEREADOR CANELA",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55888.jpg"
   },
   {
     "cargo": "estadual",
@@ -1299,21 +1299,21 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "22888",
     "nome": "VITOR LIMA",
     "coligacao": "PL",
-    "foto": ""
+    "foto": "assets/candidatos/22888.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "50001",
     "nome": "WALLK NASCIMENTO",
     "coligacao": "FEDERAÇÃO PSOL REDE(PSOL/REDE)",
-    "foto": ""
+    "foto": "assets/candidatos/50001.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55444",
     "nome": "WARTON LACERDA",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55444.jpg"
   },
   {
     "cargo": "estadual",
@@ -1327,27 +1327,27 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "11789",
     "nome": "ZÉ FERNANDO",
     "coligacao": "FEDERAÇÃO UNIÃO PROGRESSISTA(UNIÃO/PP)",
-    "foto": ""
+    "foto": "assets/candidatos/11789.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55777",
     "nome": "ZÉ OSMAR",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55777.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "55880",
     "nome": "ZILDA DA PALITOLÂNDIA",
     "coligacao": "PSD",
-    "foto": ""
+    "foto": "assets/candidatos/55880.jpg"
   },
   {
     "cargo": "estadual",
     "numero": "15999",
     "nome": "ZIZA CARVALHO",
     "coligacao": "MDB",
-    "foto": ""
+    "foto": "assets/candidatos/15999.jpg"
   }
 ];
