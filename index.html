@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#ff7437">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Colinha - Wilson Martins 5500</title>
-<!-- V2.8.0 -->
+<!-- V2.8.1 -->
 <meta name="description" content="Monte sua colinha de votação com Wilson Martins 5500 para Deputado Federal.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Colinha - Wilson Martins 5500">
@@ -277,7 +277,7 @@ canvas{display:block;width:100%;height:auto;border-radius:11px;box-shadow:0 8px 
 
 <section class="card action-card">
 <div class="actions">
-    <button class="primary" id="share" type="button">Compartilhar Santinho</button>
+    <button class="primary" id="share" type="button">Compartilhar Colinha</button>
     <button class="secondary" id="download" type="button">Salvar PNG</button>
     <button class="orange" id="copy" type="button">Copiar lista</button>
     <button class="light" id="print" type="button">Imprimir</button>
@@ -551,11 +551,11 @@ function updateProgress(){
 function saveLocal(){
   const d={};
   ORDER.forEach(id=>d[id]=getValue(id));
-  localStorage.setItem("wm5500-v280",JSON.stringify(d))
+  localStorage.setItem("wm5500-v281",JSON.stringify(d))
 }
 function loadLocal(){
   try{
-    const d=JSON.parse(localStorage.getItem("wm5500-v280")||"{}");
+    const d=JSON.parse(localStorage.getItem("wm5500-v281")||"{}");
     ORDER.forEach(id=>{if(d[id])document.getElementById(id).value=digitsOnly(d[id],SPECS[id].len)})
   }catch(e){}
 }
@@ -615,10 +615,75 @@ async function copyList(){
   try{await navigator.clipboard.writeText(shareText());toast("Lista copiada.")}
   catch(e){toast("Não foi possível copiar.")}
 }
+function openPrintableColinha(){
+  if(!valid())return;
+  draw();
+
+  let dataUrl="";
+  try{
+    dataUrl=canvas.toDataURL("image/png",1);
+  }catch(e){
+    toast("Não foi possível preparar a impressão.");
+    return
+  }
+
+  const printWindow=window.open("","_blank");
+  if(!printWindow){
+    toast("O navegador bloqueou a janela de impressão. Use Salvar PNG.");
+    return
+  }
+
+  const doc=printWindow.document;
+  doc.open();
+  doc.write(`<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Colinha - Wilson Martins 5500</title>
+<style>
+html,body{margin:0;padding:0;background:#fff;font-family:Arial,Helvetica,sans-serif}
+.page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px;box-sizing:border-box}
+img{display:block;width:100%;max-width:541px;height:auto}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0 6px}
+button{border:0;border-radius:10px;padding:12px 18px;font-size:16px;font-weight:700;cursor:pointer}
+.print-btn{background:#176da3;color:#fff}
+.close-btn{background:#eef3f6;color:#205572}
+.note{font-size:12px;color:#667784;text-align:center;max-width:541px;margin-top:6px}
+@media print{
+  .toolbar,.note{display:none!important}
+  .page{padding:0}
+  img{width:100%;max-width:none}
+  @page{margin:8mm}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<img id="colinha" alt="Colinha de votação">
+<div class="toolbar">
+  <button class="print-btn" type="button" onclick="window.print()">Imprimir</button>
+  <button class="close-btn" type="button" onclick="window.close()">Fechar</button>
+</div>
+<div class="note">Se a janela de impressão não abrir automaticamente, toque em “Imprimir”.</div>
+</div>
+<script>
+const img=document.getElementById("colinha");
+img.onload=()=>{
+  setTimeout(()=>{
+    try{window.focus();window.print()}catch(e){}
+  },350);
+};
+img.src=${JSON.stringify(dataUrl)};
+<\/script>
+</body>
+</html>`);
+  doc.close();
+}
 function resetAll(){
   if(!confirm("Limpar todos os números preenchidos?"))return;
   ORDER.forEach(id=>document.getElementById(id).value="");
-  localStorage.removeItem("wm5500-v280");
+  localStorage.removeItem("wm5500-v281");
   updateAll();
   estadual.focus()
 }
@@ -655,7 +720,7 @@ document.querySelectorAll("[data-clear]").forEach(b=>b.onclick=()=>{
 share.onclick=shareSantinho;
 download.onclick=savePng;
 copy.onclick=copyList;
-print.onclick=()=>{if(valid())window.print()};
+print.onclick=openPrintableColinha;
 reset.onclick=resetAll;
 
 loadLocal();

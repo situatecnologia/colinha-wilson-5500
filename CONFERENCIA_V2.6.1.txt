@@ -1,0 +1,30 @@
+V2.6.1 - associação de fotos pelo nome/número do arquivo
+
+13 | Lula | 13Lula.jpg
+13 | Rafael | 13Rafael.jpg
+555 | Júlio César | 555JulioCesar.jpg
+151 | Marcelo Castro | 151Marcelo.jpg
+13000 | Nerinho | 13000.jpg
+13123 | Limma | 13123.jpg
+13234 | Evaldo Gomes | 13234.jpg
+13456 | Janainna Marques | 13456.jpg
+13555 | Dr. Gil Carlos | 13555.jpg
+13678 | Hélio Rodrigues | 13678.jpg
+13888 | Rubens Vieira | 13888.jpg
+15101 | Severo Eulálio | 15101.jpg
+15222 | Dr. Hélio | 15222.jpg
+15444 | Cel Carlos Augusto | 15444.jpg
+15555 | João Madison | 15555.jpg
+55000 | Draga Alana | 55000.jpg
+55123 | Tiago Vasconcelos | 55123.jpg
+55255 | Simone Pereira | 55255.jpg
+55333 | Wilson Capote | 55333.jpg
+55555 | Júlio Cesar Filho | 55555.jpg
+13121 | Dr. Vinicius | 13121.jpg
+13111 | Fabio Novo | 13111.jpg
+13321 | Dr. Markus Kalume | 13321.jpg
+13454 | Helio Isaias | 13454.jpg
+13100 | Mauro Eduardo | 13100.jpg
+13444 | Vinicius Dias | 13444.jpg
+15000 | Dogim Felix | 15000.jpg
+15123 | Henrique Pires | 15123.jpg
