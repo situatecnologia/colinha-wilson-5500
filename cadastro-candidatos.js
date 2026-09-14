@@ -165,14 +165,14 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "300",
     "nome": "ANTÔNIO BARROS",
     "coligacao": "A FORÇA DA FÉ",
-    "foto": ""
+    "foto": "assets/candidatos/300.jpg"
   },
   {
     "cargo": "senador",
     "numero": "700",
     "nome": "ANTÔNIO JOSÉ LIRA",
     "coligacao": "A FORÇA DA FÉ",
-    "foto": ""
+    "foto": "assets/candidatos/700.jpg"
   },
   {
     "cargo": "senador",
@@ -186,112 +186,112 @@ window.CADASTRO_CANDIDATOS = [
     "numero": "291",
     "nome": "CLOVES JOSÉ",
     "coligacao": "PCO",
-    "foto": ""
+    "foto": "assets/candidatos/291.jpg"
   },
   {
     "cargo": "senador",
     "numero": "166",
     "nome": "DANNIEL ROCHA",
     "coligacao": "PSTU",
-    "foto": ""
+    "foto": "assets/candidatos/166.jpg"
   },
   {
     "cargo": "senador",
     "numero": "277",
     "nome": "DIONISIO CARVALHO",
     "coligacao": "DC",
-    "foto": ""
+    "foto": "assets/candidatos/277.jpg"
   },
   {
     "cargo": "senador",
     "numero": "500",
     "nome": "FRANCINALDO LEÃO",
     "coligacao": "FEDERAÇÃO PSOL REDE(PSOL/REDE)",
-    "foto": ""
+    "foto": "assets/candidatos/500.jpg"
   },
   {
     "cargo": "senador",
     "numero": "278",
     "nome": "IRMÃO EVANDRO MARQUES",
     "coligacao": "DC",
-    "foto": ""
+    "foto": "assets/candidatos/278.jpg"
   },
   {
     "cargo": "senador",
     "numero": "355",
     "nome": "JARDENYA BEZERRA",
     "coligacao": "DEMOCRATA",
-    "foto": ""
+    "foto": "assets/candidatos/355.jpg"
   },
   {
     "cargo": "senador",
     "numero": "456",
     "nome": "JORGE LOPES",
     "coligacao": "FEDERAÇÃO PSDB CIDADANIA(PSDB/CIDADANIA)",
-    "foto": ""
+    "foto": "assets/candidatos/456.jpg"
   },
   {
     "cargo": "senador",
     "numero": "555",
     "nome": "JULIO CESAR",
     "coligacao": "A FORÇA DO POVO",
-    "foto": "assets/candidatos/555JulioCesar.jpg"
+    "foto": "assets/candidatos/555.jpg"
   },
   {
     "cargo": "senador",
     "numero": "333",
     "nome": "MAJOR PAULO ROBERTO",
     "coligacao": "MOBILIZA",
-    "foto": ""
+    "foto": "assets/candidatos/333.jpg"
   },
   {
     "cargo": "senador",
     "numero": "151",
     "nome": "MARCELO CASTRO",
     "coligacao": "A FORÇA DO POVO",
-    "foto": "assets/candidatos/151Marcelo.jpg"
+    "foto": "assets/candidatos/151.jpg"
   },
   {
     "cargo": "senador",
     "numero": "505",
     "nome": "MARIA MADALENA NUNES",
     "coligacao": "FEDERAÇÃO PSOL REDE(PSOL/REDE)",
-    "foto": ""
+    "foto": "assets/candidatos/505.jpg"
   },
   {
     "cargo": "senador",
     "numero": "350",
     "nome": "MISSIONÁRIO EVANDRO CRAVEIRO",
     "coligacao": "DEMOCRATA",
-    "foto": ""
+    "foto": "assets/candidatos/350.jpg"
   },
   {
     "cargo": "senador",
     "numero": "707",
     "nome": "PASTOR SENA",
     "coligacao": "AVANTE",
-    "foto": ""
+    "foto": "assets/candidatos/707.jpg"
   },
   {
     "cargo": "senador",
     "numero": "800",
     "nome": "PEDRO LAURENTINO",
     "coligacao": "UP",
-    "foto": ""
+    "foto": "assets/candidatos/800.jpg"
   },
   {
     "cargo": "senador",
     "numero": "222",
     "nome": "TIAGO JUNQUEIRA",
     "coligacao": "JUNTOS PELO PIAUÍ",
-    "foto": ""
+    "foto": "assets/candidatos/222.jpg"
   },
   {
     "cargo": "senador",
     "numero": "338",
     "nome": "TOINHO DUFRANGO",
     "coligacao": "MOBILIZA",
-    "foto": ""
+    "foto": "assets/candidatos/338.jpg"
   },
   {
     "cargo": "estadual",
