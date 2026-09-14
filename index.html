@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#ff7437">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Colinha - Wilson Martins 5500</title>
-<!-- V2.8.1 -->
+<!-- V2.8.3 -->
 <meta name="description" content="Monte sua colinha de votação com Wilson Martins 5500 para Deputado Federal.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Colinha - Wilson Martins 5500">
@@ -214,6 +214,15 @@ canvas{display:block;width:100%;height:auto;border-radius:11px;box-shadow:0 8px 
   font-size:13px;
   letter-spacing:.02em;
 }
+
+.campaign-ad{max-width:680px;margin:18px auto 14px;padding:0 18px}
+.campaign-ad a{display:block;border-radius:20px;overflow:hidden;box-shadow:0 10px 28px rgba(16,55,84,.16);text-decoration:none}
+.campaign-ad img{display:block;width:100%;height:auto}
+@media(max-width:640px){
+  .campaign-ad{padding:0 14px;margin:14px auto 12px}
+  .campaign-ad a{border-radius:16px}
+}
+
 </style>
 </head>
 <body>
@@ -287,6 +296,13 @@ canvas{display:block;width:100%;height:auto;border-radius:11px;box-shadow:0 8px 
   <div class="note"><strong>Antes de votar:</strong> salve ou imprima sua colinha. No dia da eleição, leve a versão em papel para consultar os números na cabine.</div>
 </section>
 </main>
+
+<section class="campaign-ad" aria-label="Chama no Zap">
+  <a href="https://wa.me/5586994065500" target="_blank" rel="noopener noreferrer">
+    <img src="assets/anuncios/chama-no-zap.png" alt="Chama no Zap - Clique aqui">
+  </a>
+</section>
+
 <div class="footer">ELEIÇÃO 2026 WILSON NUNES MARTINS DEPUTADO FEDERAL - CNPJ: 68.289.674/0001-91 | PSD</div>
 </div>
 <div class="toast" id="toast"></div>
@@ -551,11 +567,11 @@ function updateProgress(){
 function saveLocal(){
   const d={};
   ORDER.forEach(id=>d[id]=getValue(id));
-  localStorage.setItem("wm5500-v281",JSON.stringify(d))
+  localStorage.setItem("wm5500-v283",JSON.stringify(d))
 }
 function loadLocal(){
   try{
-    const d=JSON.parse(localStorage.getItem("wm5500-v281")||"{}");
+    const d=JSON.parse(localStorage.getItem("wm5500-v283")||"{}");
     ORDER.forEach(id=>{if(d[id])document.getElementById(id).value=digitsOnly(d[id],SPECS[id].len)})
   }catch(e){}
 }
@@ -640,6 +656,7 @@ function openPrintableColinha(){
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>Colinha - Wilson Martins 5500</title>
 <style>
 html,body{margin:0;padding:0;background:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -683,7 +700,7 @@ img.src=${JSON.stringify(dataUrl)};
 function resetAll(){
   if(!confirm("Limpar todos os números preenchidos?"))return;
   ORDER.forEach(id=>document.getElementById(id).value="");
-  localStorage.removeItem("wm5500-v281");
+  localStorage.removeItem("wm5500-v283");
   updateAll();
   estadual.focus()
 }
@@ -732,5 +749,14 @@ if("serviceWorker"in navigator&&location.protocol.startsWith("http")){
   window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}))
 }
 </script>
+
+<!-- Pixel de rastreamento Atend CRM -->
+<script>
+window.RastreadorInteligente=window.RastreadorInteligente||function(){
+  (RastreadorInteligente.q=RastreadorInteligente.q||[]).push(arguments)
+};
+</script>
+<script async src="https://pixel.agendasistemacrm.com.br/p/a3028ee4-5973-40f0-92e5-247553de3a8c"></script>
+
 </body>
 </html>
